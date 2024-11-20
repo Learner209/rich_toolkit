@@ -1,5 +1,6 @@
 import os
 import json
+from glm import scale
 import torch
 import pickle
 import trimesh
@@ -68,9 +69,11 @@ canonical_mesh = trimesh.Trimesh(
 R_cam_root = SO3.exp(model_output.global_orient)
 R_world_root = R_cam_world.inverse().multiply(R_cam_root)
 
+t_world_root = s_world_cam * model_output.joints[0:1, 0, :3] @ R_cam_world.as_matrix() + t_cam_world
+
 T_world_root = SE3.from_rotation_and_translation(
     rotation=R_world_root,
-    translation=model_output.joints[0:1, 0, :3],
+    translation=t_world_root,
 ).parameters()
 # import ipdb; ipdb.set_trace()
 
