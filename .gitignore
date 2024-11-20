@@ -20,6 +20,7 @@ data
 
 datasets/
 myenv/
+*.ply
 
 data/
 egoallo_checkpoint_*
